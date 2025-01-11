@@ -4,19 +4,18 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 
-const url = 'mongodb://localhost:27017/todo-app';
+const url = 'mongodb://127.0.0.1:27017/todo-app';
 
 // Connect to MongoDB
 mongoose.connect(url, {})
     .then(() => console.log('MongoDB connected'))
-    .catch((error) => {
-        console.error('MongoDB connection failed:', error);
-    });
+    .catch((error) => console.error('MongoDB connection failed:', error));
 
 // Define Todo model
 const todoSchema = new mongoose.Schema({
     title: { type: String, required: true },
     completed: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now, index: { expires: '24h' } }
 });
 
 const Todo = mongoose.model('Todo', todoSchema);
